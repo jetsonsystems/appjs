@@ -398,6 +398,9 @@ void NativeWindow::OpenFileDialog(uv_work_t* req) {
       if( result == NSFileHandlingPanelOKButton) {
         settings->result =  [dialog URLs];
         ProcessFileDialog(req);
+      } else if ( result == NSFileHandlingPanelCancelButton) {
+	settings->result = NULL;
+        ProcessFileDialog(req);
       }
       [dialog release];
     }];
@@ -417,6 +420,9 @@ void NativeWindow::OpenFileDialog(uv_work_t* req) {
     [dialog beginSheetModalForWindow:parent completionHandler:^(NSInteger result){
       if( result == NSFileHandlingPanelOKButton) {
         settings->result   =  [NSArray arrayWithObject: [dialog URL]];
+        ProcessFileDialog(req);
+      } else if ( result == NSFileHandlingPanelCancelButton) {
+	settings->result = NULL;
         ProcessFileDialog(req);
       }
       [dialog release];
